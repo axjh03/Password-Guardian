@@ -3,7 +3,13 @@ import time
 def typewriter_effect(text):
     for char in text:
         print(char, end='', flush=True)
-        time.sleep(0.1)
+        time.sleep(0.06)
+        
+def fileCreationComplete():
+    text = "A new file has been created for you!\nDeleting that file will delete all your passwords!\nBut it's encrypted so you don't have to worry about it!"
+    for char in text:
+        print(char, end='', flush=True)
+        time.sleep(0.03)
         
 def blinking_cursor():
     while True:
@@ -18,8 +24,10 @@ def greet(NewUser):
         print(colored('\n\nWhat do you want to do today?', 'green', attrs=['bold']))   
         print("")
     else:
-        welcome_message = "Seems like you are a new user! \nLet's get you started!"
-        typewriter_effect(welcome_message)
+        welcome_message1 = "Seems like you are a new user!"
+        welcome_message2 = "\nLet's get you started!"
+        typewriter_effect(welcome_message1)
+        typewriter_effect(welcome_message2)
         
 
 def options(NewUser):
@@ -28,6 +36,7 @@ def options(NewUser):
         print("2. Exit")
         choice = input("Enter your choice: ")
         return choice
-
+        
+            
 if __name__ == "__main__":
     print("Wrong file Daddy!")
