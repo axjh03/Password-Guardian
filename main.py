@@ -36,12 +36,13 @@ else:
     try:
         decrypt(key_input)
         
-    except SystemExit:
+    except ValueError:
         print("Wrong Password\nTryAgain\n")
         typewriter_effect("Exiting..............")
         exit()
     
     greet(NewUser=False)
-   
-    # encrypt(masterkey=str(key_input), already_encrypted=True) 
+    
+    
+    encrypt(masterkey=str(key_input), already_key_generated=True) 
     
