@@ -1,8 +1,5 @@
-import csv
-import pandas as pd
+# import required module
+from cryptography.fernet import Fernet
 
-df = pd.read_csv('name.csv')
-df = pd.DataFrame(columns=['userName'])
-df.iloc[0][0] = 'Aalok'
-# name = input("Enter your name: ")
-print(df)
+key = Fernet.generate_key()
+print(key)
