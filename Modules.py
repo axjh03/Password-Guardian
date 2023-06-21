@@ -73,7 +73,7 @@ def StoreData(userName, userEmail, userPass):
     csvfile.close()
 
 
-def encrypt(masterkey, already_encrypted=False):
+def encrypt(masterkey=None, already_encrypted=False):
 
     if already_encrypted==False:
         key = Fernet.generate_key()

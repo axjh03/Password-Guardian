@@ -19,7 +19,7 @@ if 'passwords.csv' not in os.listdir(): # if there is new user.
         
         # userPass = str(input("Enter your master password: "))
         # userPass = userPass.encode('utf-8')
-        key = encrypt()
+        key = encrypt(already_encrypted=False)
         f = open("MasterPassword.txt", "x")
         key = key.decode('utf-8')
         f.write(str(key))
@@ -31,16 +31,17 @@ if 'passwords.csv' not in os.listdir(): # if there is new user.
 
 else:
     ## Greet before asking for master key [feature]
+    key_input = input("Enter your master key: ")
+    key = key_input.encode('utf-8')
     try:
-        key_input = input("Enter your master key: ")
-        key = key_input.encode('utf-8')
         decrypt(key_input)
         
     except SystemExit:
         print("Wrong Password\nTryAgain\n")
         typewriter_effect("Exiting..............")
         exit()
-   
     
+    greet(NewUser=False)
+   
     # encrypt(masterkey=str(key_input), already_encrypted=True) 
     
