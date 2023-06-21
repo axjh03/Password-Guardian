@@ -2,7 +2,7 @@
 import pandas as pd
 import os
 import csv
-from Modules import greet, options, fileCreationComplete, StoreData, encrypt, decrypt, typewriter_effect
+from Modules import greet, options, fileCreationComplete, StoreData, encrypt, decrypt, typewriter_effect, websiteStringValidator
 
 if 'passwords.csv' not in os.listdir(): # if there is new user.
     greet(NewUser=True)
@@ -19,7 +19,7 @@ if 'passwords.csv' not in os.listdir(): # if there is new user.
         
         # userPass = str(input("Enter your master password: "))
         # userPass = userPass.encode('utf-8')
-        key = encrypt(already_encrypted=False)
+        key = encrypt(already_key_generated=False)
         f = open("MasterPassword.txt", "x")
         key = key.decode('utf-8')
         f.write(str(key))
@@ -42,7 +42,14 @@ else:
         exit()
     
     greet(NewUser=False)
-    
+    userChoice = input("Enter your choice: ")
+    while(userChoice != 4):
+        if userChoice not in [1,2,3,4]:
+            print("Try again!")
+            userChoice = input("\nEnter your choice: ")
+        else:
+            if userChoice == '1':
+                input("Enter the your username for the account: ")    
     
     encrypt(masterkey=str(key_input), already_key_generated=True) 
     
