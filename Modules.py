@@ -1,7 +1,7 @@
 import time
 import csv
 from cryptography.fernet import Fernet
-
+import pandas as pd
 
 def typewriter_effect(text):
     for char in text:
@@ -54,9 +54,8 @@ def options(NewUser):
 
 def StoreData(userEmail, userPass, websiteURL=None, userName=None):
     # field names
-    ColumnName = ['Website','UserName', 'Email', 'MasterPassword']
-    websiteURL = 'https://'+websiteURL+'.com'
-    Data = [[str(userEmail),str(userName), str(userEmail), str(userPass), str(websiteURL)]]
+    ColumnName = ['Email','Username', 'Password', 'Website']
+    Data = [[str(userEmail),str(userPass), str(websiteURL), str(userName)]]
 
     # name of csv file
     filename = "passwords.csv"
@@ -119,6 +118,10 @@ def websiteStringValidator(websiteURL):
         websiteURL = 'https://'+websiteURL+'.com'
     return websiteURL
 
+def PasswordDataFrame():
+    df = pd.read_csv('passwords.csv')
+    DataFrame = pd.DataFrame(df)
+    return DataFrame
 
 if __name__ == "__main__":
     print("Wrong file!")

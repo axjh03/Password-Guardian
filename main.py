@@ -2,7 +2,7 @@
 import pandas as pd
 import os
 import csv
-from Modules import greet, options, fileCreationComplete, StoreData, encrypt, decrypt, typewriter_effect, websiteStringValidator
+from Modules import greet, options, fileCreationComplete, StoreData, encrypt, decrypt, typewriter_effect, websiteStringValidator, PasswordDataFrame
 
 if 'passwords.csv' not in os.listdir(): # if there is new user.
     greet(NewUser=True)
@@ -42,14 +42,40 @@ else:
         exit()
     
     greet(NewUser=False)
-    userChoice = input("Enter your choice: ")
-    while(userChoice != 4):
-        if userChoice not in [1,2,3,4]:
-            print("Try again!")
-            userChoice = input("\nEnter your choice: ")
-        else:
-            if userChoice == '1':
-                input("Enter the your username for the account: ")    
     
+    
+    userChoice = int(input("Enter your choice: "))
+    while userChoice != 5:
+        if userChoice not in [1, 2, 3, 4, 5]:
+            print("Try again!")
+        else:
+            if userChoice == 5:
+                break
+            elif userChoice == 4:
+                print(f"\n\n{PasswordDataFrame()}\n\n")
+                
+            elif userChoice == 1:
+                userName = input("Enter your username for the account: ")
+                userPassword = input("Enter the password for the account: ")
+                choice = input("Do you want to enter the website URL? (y/n): ")
+                if choice == 'y':
+                    websiteURL = input("Enter the website URL: ")
+                    websiteURL = websiteStringValidator(websiteURL)
+                else:
+                    websiteURL = None
+            
+                choice = input("Do you want to enter the email? (y/n): ")
+                if choice == 'y':
+                    userEmail = input("Enter the email: ")
+                else:
+                    userEmail = None
+                
+                StoreData(userEmail, userPassword, websiteURL, userName)
+                typewriter_effect("Your data has been stored successfully!")
+                greet(NewUser=False)
+    
+        userChoice = int(input("\nEnter your choice: "))
+
     encrypt(masterkey=str(key_input), already_key_generated=True) 
+    typewriter_effect("Exiting..............")
     

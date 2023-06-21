@@ -1,5 +1,5 @@
-# import required module
-from cryptography.fernet import Fernet
+import pandas as pd
 
-key = Fernet.generate_key()
-print(key)
+df = pd.read_csv('passwords.csv')
+DataFrame = pd.DataFrame(df)
+print(DataFrame)
