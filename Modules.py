@@ -52,10 +52,11 @@ def options(NewUser):
         return choice
 
 
-def StoreData(userName, userEmail, userPass):
+def StoreData(userEmail, userPass, websiteURL=None, userName=None):
     # field names
-    ColumnName = ['Name', 'Email', 'MasterPassword']
-    Data = [[str(userName), str(userEmail), str(userPass)]]
+    ColumnName = ['Website','UserName', 'Email', 'MasterPassword']
+    websiteURL = 'https://'+websiteURL+'.com'
+    Data = [[str(userEmail),str(userName), str(userEmail), str(userPass), str(websiteURL)]]
 
     # name of csv file
     filename = "passwords.csv"
@@ -106,6 +107,17 @@ def decrypt(key):
     # Write the decrypted data to a new file
     with open('passwords.csv', 'wb') as dec_file:
         dec_file.write(decrypted)
+
+def websiteStringValidator(websiteURL):
+    if (websiteURL.startswith('https://')==True and websiteURL.endswith('.com') == True):
+        pass
+    elif(websiteURL.startswith('https://')==True and websiteURL.endswith('.com') == False):
+        websiteURL = websiteURL + '.com'
+    elif(websiteURL.startswith('https://') == False and websiteURL.endswith('.com') == True):
+        websiteURL = 'https://'+websiteURL
+    else:
+        websiteURL = 'https://'+websiteURL+'.com'
+    return websiteURL
 
 
 if __name__ == "__main__":
