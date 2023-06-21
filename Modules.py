@@ -2,17 +2,20 @@ import time
 import csv
 from cryptography.fernet import Fernet
 
+
 def typewriter_effect(text):
     for char in text:
         print(char, end='', flush=True)
         time.sleep(0.06)
-        
+
+
 def fileCreationComplete():
     text = "A new file has been created for you!\nDeleting that file will delete all your passwords!\nBut it's encrypted so you don't have to worry about it!"
     for char in text:
         print(char, end='', flush=True)
         time.sleep(0.03)
-        
+
+
 def blinking_cursor():
     while True:
         print('_', end='', flush=True)
@@ -20,17 +23,26 @@ def blinking_cursor():
         print('\b', end='', flush=True)
         time.sleep(0.5)
 
+
 def greet(NewUser):
-    if NewUser==False:
+    if NewUser == False:
         from termcolor import colored
-        print(colored('\n\nWhat do you want to do today?', 'green', attrs=['bold']))   
+        print(colored('\n\nWhat do you want to do today?',
+              'white', attrs=['bold']))
         print("")
+        print(colored("1. Create a new password", 'blue'))
+        print(colored("2. View your passwords", 'green'))
+        print(colored("3. Delete a password", 'red'))
+        print(colored("4. View table form of all saved password", 'green'))
+        print(colored("5. Exit", 'yellow'))
+        
+        
     else:
         welcome_message1 = "Seems like you are a new user!"
         welcome_message2 = "\nLet's get you started!"
         typewriter_effect(welcome_message1)
         typewriter_effect(welcome_message2)
-        
+
 
 def options(NewUser):
     if NewUser:
@@ -38,6 +50,7 @@ def options(NewUser):
         print("2. Exit")
         choice = input("Enter your choice: ")
         return choice
+
 
 def StoreData(userName, userEmail, userPass):
     # field names
@@ -60,23 +73,24 @@ def StoreData(userName, userEmail, userPass):
     csvfile.close()
 
 
-def encrypt():
-    key = Fernet.generate_key()
-    print(key)
+def encrypt(masterkey, already_encrypted=False):
 
-    with open('name.csv', 'rb') as file:
+    if already_encrypted==False:
+        key = Fernet.generate_key()
+    else:
+        key = masterkey.encode('utf-8')
+
+    with open('passwords.csv', 'rb') as file:
         original = file.read()
-    
+
     fernet = Fernet(key)
-    
-    encrypted = fernet.encrypt(data = original)
 
-    with open('name.csv', 'wb') as encrypted_file:
+    encrypted = fernet.encrypt(data=original)
+
+    with open('passwords.csv', 'wb') as encrypted_file:
         encrypted_file.write(encrypted)
-        
+
     return key
-
-
 
 
 def decrypt(key):
@@ -84,19 +98,15 @@ def decrypt(key):
     fernet = Fernet(key)
 
     # opening the encrypted file
-    with open('name.csv', 'rb') as enc_file:
-	    encrypted = enc_file.read()
-
-    # decrypting the file
+    with open('passwords.csv', 'rb') as enc_file:
+        encrypted = enc_file.read()
+    # Decrypt the file
     decrypted = fernet.decrypt(encrypted)
 
-    # opening the file in write mode and
-    # writing the decrypted data
-    with open('name.csv', 'wb') as dec_file:
-	    dec_file.write(decrypted)
-
+    # Write the decrypted data to a new file
+    with open('passwords.csv', 'wb') as dec_file:
+        dec_file.write(decrypted)
 
 
 if __name__ == "__main__":
     print("Wrong file!")
-    
