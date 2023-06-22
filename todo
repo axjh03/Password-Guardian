@@ -17,3 +17,5 @@ to delete
 to add 
 1 password already for this website with same username
 do you want to add a new one or overwrite the old one?
+
+total number of password saved count before greet == True

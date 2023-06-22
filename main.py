@@ -51,9 +51,19 @@ else:
         else:
             if userChoice == 5:
                 break
+            
+            
+            
             elif userChoice == 4:
                 print(f"\n\n{PasswordDataFrame()}\n\n")
                 
+                
+                
+            elif userChoice == 2:
+                pass
+            
+            
+            
             elif userChoice == 1:
                 userName = input("Enter your username for the account: ")
                 userPassword = input("Enter the password for the account: ")

@@ -1,5 +1,40 @@
 import pandas as pd
 
-df = pd.read_csv('passwords.csv')
-DataFrame = pd.DataFrame(df)
-print(DataFrame)
+def websiteStringValidator(websiteURL):
+    if (websiteURL.startswith('https://www.')==True and websiteURL.endswith('.com/') == True):
+        pass
+    elif(websiteURL.startswith('https://www.')==True and websiteURL.endswith('.com/') == False):
+        websiteURL = websiteURL + '.com'
+    elif(websiteURL.startswith('https://www.') == False and websiteURL.endswith('.com/') == True):
+        websiteURL = 'https://www.'+websiteURL
+    else:
+        websiteURL = 'https://www.'+websiteURL+'.com/'
+    return websiteURL
+
+def password_finder():
+    df = pd.read_csv('pass.csv')
+    password_table = pd.DataFrame(df)
+    
+    searchBy = str(input("Do you want to search by username or website? (u/w): "))
+    if (searchBy=='w'):
+        choiceWeb = str(input("Enter your website name: "))
+        choiceWeb = websiteStringValidator(choiceWeb)
+        PostdataFrame = df.loc[df['website'] == choiceWeb]
+        if (len(PostdataFrame.index)>1):
+            print(f"Total of {len(PostdataFrame.index)} passwords found for {choiceWeb[12:-1]}")
+            choice = int(input("Your choice : \n1.) See Table form of all usernames and password\n2.)List all usernames and print password for your choice\n3.)Exit\nYour Choice : "))
+            if (choice == 1 ):
+                print(PostdataFrame.loc[:,['username','pass']])
+            elif choice == 2:
+                newFrame = PostdataFrame.loc[:, ['username']].copy()
+                newFrame = newFrame.rename(columns={'username': 'Usernames found'})
+                newFrame = newFrame.reset_index(drop=True)
+                print(newFrame.iloc[1].to_string(index=False, header=False))
+                
+                
+
+        
+        
+
+password_finder()
+# print(newFrame.iloc[1].to_string(index=False, header=False))

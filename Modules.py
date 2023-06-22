@@ -108,14 +108,14 @@ def decrypt(key):
         dec_file.write(decrypted)
 
 def websiteStringValidator(websiteURL):
-    if (websiteURL.startswith('https://')==True and websiteURL.endswith('.com') == True):
+    if (websiteURL.startswith('https://www.')==True and websiteURL.endswith('.com/') == True):
         pass
-    elif(websiteURL.startswith('https://')==True and websiteURL.endswith('.com') == False):
+    elif(websiteURL.startswith('https://www.')==True and websiteURL.endswith('.com/') == False):
         websiteURL = websiteURL + '.com'
-    elif(websiteURL.startswith('https://') == False and websiteURL.endswith('.com') == True):
-        websiteURL = 'https://'+websiteURL
+    elif(websiteURL.startswith('https://www.') == False and websiteURL.endswith('.com/') == True):
+        websiteURL = 'https://www.'+websiteURL
     else:
-        websiteURL = 'https://'+websiteURL+'.com'
+        websiteURL = 'https://www.'+websiteURL+'.com/'
     return websiteURL
 
 def PasswordDataFrame():
