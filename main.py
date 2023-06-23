@@ -2,7 +2,7 @@
 import pandas as pd
 import os
 import csv
-from Modules import greet, options, fileCreationComplete, StoreData, encrypt, decrypt, typewriter_effect, websiteStringValidator, PasswordDataFrame, password_finder
+from Modules import *
 
 if 'passwords.csv' not in os.listdir(): # if there is new user.
     greet(NewUser=True)
@@ -55,15 +55,18 @@ else:
             
             
             elif userChoice == 4:
-                print(f"\n\n{PasswordDataFrame()}\n\n")
+                try : 
+                    print(f"\n\n{PasswordDataFrame()}\n\n")
+                except :
+                    print("\nNo passwords saved yet!")
                 
                 
-                
+        
             elif userChoice == 2:
                 password_finder()
-            
-            
-            
+            elif userChoice == 3:
+                deletePassword()
+                
             elif userChoice == 1:
                 userName = input("Enter your username for the account: ")
                 userPassword = input("Enter the password for the account: ")

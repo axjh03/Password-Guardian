@@ -122,33 +122,42 @@ def password_finder():
     if searchBy == 'w':
         choiceWeb = str(input("\nEnter the website name: "))
         choiceWeb = websiteStringValidator(choiceWeb)
-        PostdataFrame = password_table.loc[password_table['website'] == choiceWeb]
+        PostdataFrame = password_table.loc[password_table['Website'] == choiceWeb]
 
         if len(PostdataFrame.index) > 1:
-            print(f"\n{len(PostdataFrame.index)} passwords found for {choiceWeb[12:-1]}")
-            choice = int(input("\nYour choice:\n1.) See Table form of all usernames and password\n2.) List all usernames and print password for your choice\n3.) Exit\nYour Choice: "))
+            print(f"\n{len(PostdataFrame.index)} passwords found for website : {choiceWeb[12:-1]}")
+            choice = int(input("\nYour choice:\n1.) See Table form of all usernames and password\n2.) By specific username\n3.) Exit\nYour Choice: "))
 
             if choice == 1:
-                print(PostdataFrame.loc[:, ['username', 'pass']])
+                print(PostdataFrame.loc[:, ['Username', 'Password', 'Email']])
             elif choice == 2:
-                newFrame = PostdataFrame.loc[:, ['username']].copy()
-                newFrame = newFrame.rename(columns={'username': 'Usernames found'})
+                newFrame = PostdataFrame.loc[:, ['Username']].copy()
+                newFrame = newFrame.rename(columns={'Username': 'Usernames found'})
                 newFrame = newFrame.reset_index(drop=True)
                 username = str(input("Enter your username: "))
-                password = PostdataFrame.loc[PostdataFrame['username'] == username, 'pass'].values[0]
-                website = PostdataFrame.loc[PostdataFrame['username'] == username, 'website'].values[0]
-                print(f"The password for username {username} is: {password}")
-                print(f"The associated website is: {website}")
+                password = PostdataFrame.loc[PostdataFrame['Username'] == username, 'Password'].values[0]
+                website = PostdataFrame.loc[PostdataFrame['Username'] == username, 'Website'].values[0]
+                email = PostdataFrame.loc[PostdataFrame['Username'] == username, 'Email'].values[0]
+                print(f"The password for username {username} is: -> ", end="")
+                print(colored(password, 'red'), end="")
+                print(" <-")
+                print(f"The associated email is: ", end="")
+                print(colored(email, 'green'))
+                print(f"The associated website is: ", end="")
+                print(colored(choiceWeb, 'blue'))
             else:
                 exit()
 
         else:
-            username = PostdataFrame.loc[PostdataFrame['website'] == choiceWeb, 'username'].values[0]
-            password = PostdataFrame.loc[PostdataFrame['website'] == choiceWeb, 'pass'].values[0]
+            username = PostdataFrame.loc[PostdataFrame['Website'] == choiceWeb, 'Username'].values[0]
+            password = PostdataFrame.loc[PostdataFrame['Website'] == choiceWeb, 'Password'].values[0]
+            email = PostdataFrame.loc[PostdataFrame['Website'] == choiceWeb, 'Email'].values[0]
             print("One password found for the website\n")
             print(f"The password for username {username} is: -> ", end="")
             print(colored(password, 'red'), end="")
             print(" <-")
+            print(f"The associated email is: ", end="")
+            print(colored(email, 'green'))
             print(f"The associated website is: ", end="")
             print(colored(choiceWeb, 'blue'))
 
@@ -165,17 +174,69 @@ def password_finder():
             for index, row in matching_passwords.iterrows():
                 password = row['Password']
                 website = row['Website']
+                email = row['Email']
 
                 print(f"The password for username {username} is: -> ", end="")
                 print(colored(password, 'red'), end="")
                 print(" <-")
+                print(f"The associated email is: ", end="")
+                print(colored(email, 'green'))
                 print(f"The associated website is: ", end="")
                 print(colored(website, 'blue'))
                 print("")
-
     else:
         exit()
+        
+def deletePassword():
+    df = pd.read_csv('passwords.csv')
+    password_table = pd.DataFrame(df)
 
+    choice = str(input("\nDo you want to delete by username, email, or website? (u/e/w): "))
+
+    if choice == 'u':
+        username = str(input("\nEnter the username: "))
+        matching_passwords = password_table.loc[password_table['Username'] == username]
+    elif choice == 'e':
+        email = str(input("\nEnter the email: "))
+        matching_passwords = password_table.loc[password_table['Email'] == email]
+    elif choice == 'w':
+        website = str(input("\nEnter the website: "))
+        website = websiteStringValidator(website)
+        matching_passwords = password_table.loc[password_table['Website'] == website]
+    else:
+        print("Invalid choice.")
+        return
+
+    if len(matching_passwords) == 0:
+        print("No password found for the given input.")
+        return
+
+    if len(matching_passwords) > 1:
+        print(f"\n{len(matching_passwords)} passwords found:")
+        print(matching_passwords.to_string(index=False))
+        
+        # Future fix : Create a copy of dataframe and then display that with index from 1. so that original dataframe is not affected
+        print(colored("Choose the number from table to delete", 'red'))
+        index_choice = int(input("\nEnter the index of the password you want to delete: "))
+        
+        if index_choice < 0 or index_choice >= len(matching_passwords):
+            print("Invalid index choice.")
+            return
+        index_choice = index_choice-1
+        password_row = matching_passwords.iloc[index_choice]
+    else:
+        password_row = matching_passwords.iloc[0]
+    # print(colored(password_row, 'red')))
+    print(f"\nPassword to delete:\n{password_row}\n")
+
+    confirm = str(input("Are you sure you want to delete this password? (y/n): "))
+
+    if confirm.lower() == 'y':
+        password_table = password_table.drop(password_row.name)
+        password_table.to_csv('passwords.csv', index=False)
+        print("Password deleted successfully.")
+    else:
+        print("\nDeletion canceled.")
 
 if __name__ == "__main__":
     print("Wrong file!")
