@@ -59,6 +59,6 @@ In future versions, we plan to enhance the Password Manager with the following f
 Stay tuned for future updates and releases!
 
 ## Contributors
-This project is maintained by [Your Name]. Contributions and feedback are welcome. Feel free to [contact us](mailto:axjh03@example.com) with any suggestions or issues.
+This project is maintained by Alok Jha. Contributions and feedback are welcome. Feel free to [contact us](mailto:axjh03@example.com) with any suggestions or issues.
 
 
