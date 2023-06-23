@@ -16,10 +16,18 @@ Welcome to the Password Manager! This is a simple version of a password manager 
 To get started with the Password Manager, follow these steps:
 
 1. Clone the repository or download the source code.
+```
+git clone https://github.com/axjh03/PasswordManager.git
+```
 2. Make sure you have Python installed on your system.
 3. Install the required dependencies by running the following command:
+```
 pip install -r requirements.txt
+```
 4. Run the password manager script:
+```
+python main.py
+```
 
 ## How to Use
 Once you have started the Password Manager, you will be presented with a menu of options to choose from. Here is a brief explanation of each option:
@@ -50,10 +58,6 @@ In future versions, we plan to enhance the Password Manager with the following f
 Stay tuned for future updates and releases!
 
 ## Contributors
-This project is maintained by [Your Name]. Contributions and feedback are welcome. Feel free to [contact us](mailto:your-email@example.com) with any suggestions or issues.
+This project is maintained by [Your Name]. Contributions and feedback are welcome. Feel free to [contact us](mailto:axjh03@example.com) with any suggestions or issues.
 
-## License
-This project is licensed under the [MIT License](LICENSE).
-
-We hope you find the Password Manager helpful in managing your passwords. Remember to stay vigilant and practice good password hygiene.
 
