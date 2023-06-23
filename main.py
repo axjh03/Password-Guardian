@@ -2,7 +2,7 @@
 import pandas as pd
 import os
 import csv
-from Modules import greet, options, fileCreationComplete, StoreData, encrypt, decrypt, typewriter_effect, websiteStringValidator, PasswordDataFrame
+from Modules import greet, options, fileCreationComplete, StoreData, encrypt, decrypt, typewriter_effect, websiteStringValidator, PasswordDataFrame, password_finder
 
 if 'passwords.csv' not in os.listdir(): # if there is new user.
     greet(NewUser=True)
@@ -60,7 +60,7 @@ else:
                 
                 
             elif userChoice == 2:
-                pass
+                password_finder()
             
             
             
@@ -82,8 +82,8 @@ else:
                 
                 StoreData(userEmail, userPassword, websiteURL, userName)
                 typewriter_effect("Your data has been stored successfully!")
-                greet(NewUser=False)
-    
+        print("")
+        greet(NewUser=False)
         userChoice = int(input("\nEnter your choice: "))
 
     encrypt(masterkey=str(key_input), already_key_generated=True) 

@@ -2,6 +2,7 @@ import time
 import csv
 from cryptography.fernet import Fernet
 import pandas as pd
+from termcolor import colored
 
 def typewriter_effect(text):
     for char in text:
@@ -26,7 +27,7 @@ def blinking_cursor():
 
 def greet(NewUser):
     if NewUser == False:
-        from termcolor import colored
+        
         print(colored('\n\nWhat do you want to do today?',
               'white', attrs=['bold']))
         print("")
@@ -54,24 +55,31 @@ def options(NewUser):
 
 def StoreData(userEmail, userPass, websiteURL=None, userName=None):
     # field names
-    ColumnName = ['Email','Username', 'Password', 'Website']
-    Data = [[str(userEmail),str(userPass), str(websiteURL), str(userName)]]
+    ColumnName = ['Username', 'Password', 'Email', 'Website']
+    Data = [[str(userName), str(userPass), str(userEmail), str(websiteURL)]]
 
     # name of csv file
     filename = "passwords.csv"
 
-    # writing to csv file
-    with open(filename, 'w', newline='') as csvfile:
+    # writing to csv file in append mode
+    with open(filename, 'a+', newline='') as csvfile:
         # creating a csv writer object
         csvwriter = csv.writer(csvfile)
 
-        # writing the fields
-        csvwriter.writerow(ColumnName)
+        # check if the file is empty
+        csvfile.seek(0)
+        first_char = csvfile.read(1)
+        is_empty = not first_char
+
+        # write the fields only if the file is empty
+        if is_empty:
+            csvwriter.writerow(ColumnName)
 
         # writing the data row
         csvwriter.writerows(Data)
-    csvfile.close()
 
+    # close the file
+    csvfile.close()
 
 def encrypt(masterkey=None, already_key_generated=False):
 
@@ -122,6 +130,67 @@ def PasswordDataFrame():
     df = pd.read_csv('passwords.csv')
     DataFrame = pd.DataFrame(df)
     return DataFrame
+
+def password_finder():
+    df = pd.read_csv('passwords.csv')
+    password_table = pd.DataFrame(df)
+
+    searchBy = str(
+        input("Do you want to search by username or website? (u/w): "))
+    if (searchBy == 'w'):
+        choiceWeb = str(input("\nEnter the website name: "))
+        choiceWeb = websiteStringValidator(choiceWeb)
+        PostdataFrame = password_table.loc[password_table['website'] == choiceWeb]
+        if (len(PostdataFrame.index) > 1):
+            print(
+                f"\n{len(PostdataFrame.index)} passwords found for {choiceWeb[12:-1]}")
+            choice = int(input(
+                "\nYour choice : \n1.)See Table form of all usernames and password\n2.)List all usernames and print password for your choice\n3.)Exit\nYour Choice : "))
+            if (choice == 1):
+                print(PostdataFrame.loc[:, ['username', 'pass']])
+            elif choice == 2:
+                newFrame = PostdataFrame.loc[:, ['username']].copy()
+                newFrame = newFrame.rename(
+                    columns={'username': 'Usernames found'})
+                newFrame = newFrame.reset_index(drop=True)
+                username = str(input("Enter your username: "))
+                password = PostdataFrame.loc[PostdataFrame['username']
+                                             == username, 'pass'].values[0]
+                website = PostdataFrame.loc[PostdataFrame['username']
+                                            == username, 'website'].values[0]
+                print(f"The password for username {username} is: {password}")
+                print(f"The associated website is: {website}")
+            else:
+                exit()
+        else:
+            username = PostdataFrame.loc[PostdataFrame['website']
+                                         == choiceWeb, 'username'].values[0]
+            password = PostdataFrame.loc[PostdataFrame['website']
+                                         == choiceWeb, 'pass'].values[0]
+            print("One password found for the website\n")
+            print(f"The password for username {username} is: -> ", end="")
+            print(colored(password, 'red'), end="")
+            print(" <-")
+            print(f"The associated website is: ", end="")
+            print(colored(choiceWeb, 'blue'))
+    elif searchBy == 'u':
+        username = str(input("Enter the username: "))
+        matching_passwords = password_table.loc[password_table['Username'] == username]
+
+        if len(matching_passwords) == 0:
+            print("No password found for the given username.")
+        else:
+            for index, row in matching_passwords.iterrows():
+                password = row['Password']
+                website = row['Website']
+                print(f"The password for username {username} is: {password}")
+                print(f"The associated website is: {website}")
+    else:
+        exit()
+        
+        
+        
+        
 
 if __name__ == "__main__":
     print("Wrong file!")
