@@ -136,7 +136,7 @@ def password_finder():
     password_table = pd.DataFrame(df)
 
     searchBy = str(
-        input("Do you want to search by username or website? (u/w): "))
+        input("\nDo you want to search by username or website? (u/w): "))
     if (searchBy == 'w'):
         choiceWeb = str(input("\nEnter the website name: "))
         choiceWeb = websiteStringValidator(choiceWeb)
@@ -174,17 +174,23 @@ def password_finder():
             print(f"The associated website is: ", end="")
             print(colored(choiceWeb, 'blue'))
     elif searchBy == 'u':
-        username = str(input("Enter the username: "))
+        username = str(input("\nEnter the username: "))
         matching_passwords = password_table.loc[password_table['Username'] == username]
-
+        password_count = len(matching_passwords)
+        print(f"{password_count} passwords found for {username}")
         if len(matching_passwords) == 0:
             print("No password found for the given username.")
         else:
             for index, row in matching_passwords.iterrows():
                 password = row['Password']
                 website = row['Website']
-                print(f"The password for username {username} is: {password}")
-                print(f"The associated website is: {website}")
+                
+                print(f"The password for username {username} is: -> ", end="")
+                print(colored(password, 'red'), end="")
+                print(" <-")
+                print(f"The associated website is: ", end="")
+                print(colored(website, 'blue'))
+                print("")
     else:
         exit()
         
