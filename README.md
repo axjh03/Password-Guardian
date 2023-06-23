@@ -10,6 +10,7 @@ Welcome to the Password Manager! This is a simple version of a password manager 
 ## Technologies Used
 - Python: The programming language used for developing the password manager.
 - Pandas: Used for data management and organization.
+- Fernet Cryptography: Utilized for encrypting and decrypting passwords securely.
 - Exception Handling: Implemented to handle errors and provide a smooth user experience.
 
 ## Getting Started
