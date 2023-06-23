@@ -1,6 +1,8 @@
 import time
 import csv
 from cryptography.fernet import Fernet
+import smtplib 
+from email.message import EmailMessage
 
 
 def typewriter_effect(text):
@@ -51,6 +53,18 @@ def options(NewUser):
         choice = input("Enter your choice: ")
         return choice
 
+#email function
+def send_email(user_email):
+    msg = EmailMessage()
+    msg['Subject'] = 'Password Creation Notification'
+    msg['From'] = 'axjh03@gmail.com'
+    msg['To'] = user_email
+
+    msg.set_content('Password has been created successfully!')
+    with smtplib.SMTP('smtp.gmail.com', 587) as smtp:
+        smtp.starttls()
+        smtp.login('axjh03@gmail.com', 'your-password')
+        smtp.send_message(msg)
 
 def StoreData(userName, userEmail, userPass):
     # field names
@@ -70,6 +84,8 @@ def StoreData(userName, userEmail, userPass):
 
         # writing the data row
         csvwriter.writerows(Data)
+        #sending emails 
+        send_email(userEmail)
     csvfile.close()
 
 
@@ -110,3 +126,4 @@ def decrypt(key):
 
 if __name__ == "__main__":
     print("Wrong file!")
+
